@@ -1,0 +1,27 @@
+version: "2"
+services:
+
+ openwebrx:
+
+    image: jketterl/openwebrx
+    restart: unless-stopped
+    privileged: true
+    networks:
+      - web
+
+    labels:
+        - "traefik.backend=openwebrx"
+        - "traefik.port=8073"
+        - "traefik.frontend.rule=Host:sdr.URL.com.ar"
+        - "traefik.docker.network=web"    
+    volumes:
+        - /home/pi/openwebrx/config:/etc/openwebrx
+        - /home/pi/openwebrx/html:/opt/openwebrx/htdocs
+        - /home/pi/openwebrx/owrz:/opt/openwebrx/owrx
+    devices:
+        - /dev/bus/usb/:/dev/bus/usb/
+      
+networks:
+  web:
+    external:
+      name: web
